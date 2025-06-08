@@ -33,12 +33,16 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: var(--max-width);
             margin: 0 auto;
             padding: var(--section-spacing) 2rem;
+            flex: 1;
         }
 
         .hero {
@@ -71,29 +75,32 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         label {
+            display: inline-block;
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.375rem;
         }
 
         input {
+            width: 100%;
             font-size: 1rem;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem;
             background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 8px;
             color: var(--text);
             transition: all 0.2s ease;
+            -webkit-appearance: none;
         }
 
         input:focus {
@@ -102,7 +109,8 @@
         }
 
         .info-text {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            line-height: 1.4;
             color: var(--text-secondary);
             opacity: 0.8;
             margin-top: 0.25rem;
@@ -278,67 +286,194 @@
             font-size: 1.25rem;
         }
 
-        /* Replace footer styles */
+        .label-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .field-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.375rem;
+        }
+
+        .normal-range {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            opacity: 0.75;
+            font-style: italic;
+            letter-spacing: 0.02em;
+            margin-top: 0.25rem;
+            padding-left: 0.25rem;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: var(--surface);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            max-width: 250px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: auto;  /* Changed from none to auto */
+            cursor: auto;
+        }
+
         .footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
-            padding: 1rem;
-            margin-top: 3rem;
+            padding: 1.5rem;
+            margin-top: auto;
             text-align: center;
+            width: 100%;
         }
 
         .footer-content {
             font-size: 0.95rem;
             color: var(--text-secondary);
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.4;
         }
 
         .footer-link {
+            display: inline-flex;
+            align-items: center;
             color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            padding: 0.25rem 0;
+            z-index: 1;
         }
 
-        .footer-link::after {
+        .footer-link::before {
             content: '';
             position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%,
-                var(--primary) 50%,
-                transparent 100%
-            );
+            inset: 0;
+            background: var(--primary);
+            opacity: 0.1;
+            z-index: -1;
             transform: scaleX(0);
-            transition: transform 0.4s ease;
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .footer-link:hover {
-            color: #fff;
+            color: var(--primary-hover);
         }
 
-        .footer-link:hover::after {
+        .footer-link:hover::before {
             transform: scaleX(1);
-        }
-
-        /* Remove fixed footer adjustments */
-        .container {
-            padding: var(--section-spacing) 2rem;
+            transform-origin: left;
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 1rem;
             }
             
             .form-container {
-                padding: 1.5rem;
+                padding: 1.25rem;
+            }
+
+            .form-grid {
+                gap: 1rem;
             }
 
             .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .tab {
+                padding: 0.625rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            input {
+                font-size: 16px; /* Prevents iOS zoom */
+                padding: 0.625rem;
+            }
+
+            .prediction-card {
+                padding: 1.25rem;
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .feature-item {
+                padding: 1rem;
+            }
+
+            .feature-importance {
+                padding: 1.25rem;
+            }
+
+            .prediction-icon {
                 font-size: 2rem;
+            }
+
+            .prediction-title {
+                font-size: 1.1rem;
+            }
+
+            .feature-value {
+                font-size: 1.1rem;
+            }
+
+            .field-info {
+                flex-direction: column;
+                gap: 0.125rem;
+                align-items: flex-start;  /* Changed from center */
+            }
+
+            .label-group {
+                width: 100%;
+                justify-content: flex-start;  /* Added for explicit alignment */
+            }
+        }
+
+        /* Add touch-friendly styles */
+        @media (hover: none) {
+            .submit-btn:active {
+                transform: translateY(1px);
+            }
+
+            .feature-item:active {
+                transform: translateY(1px);
+            }
+
+            input[type="number"] {
+                min-height: 44px; /* Better touch targets */
             }
         }
 
@@ -368,39 +503,84 @@
                 <form id="diabetesForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="pregnancies">Number of Pregnancies</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="pregnancies">Number of Pregnancies</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Total number of pregnancies experienced. Important for gestational diabetes risk assessment."></i>
+                                </div>
+                            </div>
                             <input type="number" id="pregnancies" min="0" required>
+                            <span class="normal-range">(Range: 0-15)</span>
                         </div>
                         <div class="form-group">
-                            <label for="glucose">Glucose Level (mg/dL)</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="glucose">Glucose Level (mg/dL)</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Blood glucose level measured after 2-hour oral glucose tolerance test. Key indicator for diabetes."></i>
+                                </div>
+                            </div>
                             <input type="number" id="glucose" min="0" required>
-                            <div class="info-text">Normal fasting glucose range: 70-99 mg/dL</div>
+                            <span class="normal-range">(Normal: 70-99 mg/dL)</span>
                         </div>
                         <div class="form-group">
-                            <label for="bloodPressure">Blood Pressure (mm Hg)</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="bloodPressure">Blood Pressure (mm Hg)</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Blood pressure reading indicating the force of blood against artery walls."></i>
+                                </div>
+                            </div>
                             <input type="number" id="bloodPressure" min="0" required>
-                            <div class="info-text">Normal range: 90/60 to 120/80 mm Hg</div>
+                            <span class="normal-range">(Normal: 90/60 to 120/80 mm Hg)</span>
                         </div>
                         <div class="form-group">
-                            <label for="skinThickness">Skin Thickness (mm)</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="skinThickness">Skin Thickness (mm)</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Thickness of the skin at the triceps, measured with a caliper."></i>
+                                </div>
+                            </div>
                             <input type="number" id="skinThickness" min="0" required>
+                            <span class="normal-range">(Normal: 20-40 mm for adults)</span>
                         </div>
                         <div class="form-group">
-                            <label for="insulin">Insulin Level (μU/mL)</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="insulin">Insulin Level (μU/mL)</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Insulin concentration in the blood, measured in micro-units per milliliter."></i>
+                                </div>
+                            </div>
                             <input type="number" id="insulin" min="0" required>
+                            <span class="normal-range">(Fasting: 3-25 μU/mL)</span>
                         </div>
                         <div class="form-group">
-                            <label for="bmi">BMI</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="bmi">BMI</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Body Mass Index, a measure of body fat based on height and weight."></i>
+                                </div>
+                            </div>
                             <input type="number" id="bmi" step="0.1" min="0" required>
-                            <div class="info-text">Normal range: 18.5 to 24.9</div>
+                            <span class="normal-range">(Healthy range: 18.5-24.9)</span>
                         </div>
                         <div class="form-group">
-                            <label for="dpf">Diabetes Pedigree Function</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="dpf">Diabetes Pedigree Function</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="A function indicating the genetic predisposition to diabetes."></i>
+                                </div>
+                            </div>
                             <input type="number" id="dpf" step="0.001" min="0" required>
+                            <span class="normal-range">(Typical range: 0.1-2.5)</span>
                         </div>
                         <div class="form-group">
-                            <label for="age">Age</label>
+                            <div class="field-info">
+                                <div class="label-group">
+                                    <label for="age">Age</label>
+                                    <i class="ph ph-info info-icon" data-tooltip="Age of the individual in years."></i>
+                                </div>
+                            </div>
                             <input type="number" id="age" min="0" required>
+                            <span class="normal-range">(Adult range: 18+ years)</span>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn">Analyze Risk</button>
@@ -432,7 +612,12 @@
 
     <footer class="footer">
         <div class="footer-content">
-            Developed by: <a href="https://myhistory.co.ke" target="_blank" class="footer-link">Eljones</a>
+            <div>
+                Developed by: <a href="https://myhistory.co.ke" target="_blank" class="footer-link">Eljones <i class="ph ph-arrow-up-right" style="font-size: 0.85em; margin-left: 2px;"></i></a>
+            </div>
+            <div class="footer-disclaimer">
+                Disclaimer: This is an AI-powered risk assessment tool. Results are generated by machine learning models and should be used for reference purposes only. Always consult healthcare professionals for medical advice.
+            </div>
         </div>
     </footer>
 
@@ -551,6 +736,60 @@
             badge.style.display = 'inline-block';
             setTimeout(() => badge.style.display = 'none', 3000);
         }
+
+        // Add tooltip functionality
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+
+        document.querySelectorAll('.info-icon').forEach(icon => {
+            let isVisible = false;
+
+            const showTooltip = (e) => {
+                e.stopPropagation();
+                const allTooltips = document.querySelectorAll('.tooltip');
+                allTooltips.forEach(t => t.style.opacity = '0');
+                
+                tooltip.textContent = e.currentTarget.dataset.tooltip;
+                tooltip.style.opacity = '1';
+                
+                const rect = e.currentTarget.getBoundingClientRect();
+                const tooltipWidth = tooltip.offsetWidth;
+                
+                tooltip.style.left = `${Math.min(
+                    rect.left - (tooltipWidth/2) + 10,
+                    window.innerWidth - tooltipWidth - 10
+                )}px`;
+                tooltip.style.top = `${rect.bottom + 10}px`;
+                isVisible = true;
+            };
+
+            const hideTooltip = () => {
+                tooltip.style.opacity = '0';
+                isVisible = false;
+            };
+
+            // Handle both hover and click events
+            if (window.matchMedia('(hover: hover)').matches) {
+                icon.addEventListener('mouseenter', showTooltip);
+                icon.addEventListener('mouseleave', hideTooltip);
+            }
+
+            icon.addEventListener('click', (e) => {
+                if (isVisible) {
+                    hideTooltip();
+                } else {
+                    showTooltip(e);
+                }
+            });
+
+            // Close tooltip when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.info-icon') && isVisible) {
+                    hideTooltip();
+                }
+            });
+        });
     </script>
 </body>
 </html>
