@@ -38,6 +38,10 @@
             flex-direction: column;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         .container {
             max-width: var(--max-width);
             margin: 0 auto;
@@ -324,7 +328,7 @@
             background: var(--surface);
             border-top: 1px solid var(--border);
             padding: 1.5rem;
-            margin-top: auto;
+            margin-top: 2rem;
             text-align: center;
             width: 100%;
         }
@@ -750,7 +754,13 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab, .tab-content').forEach(el => el.classList.remove('active'));
             document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-            document.getElementById(`${tabId}Tab`).classList.add('active');
+            const tabContent = document.getElementById(`${tabId}Tab`);
+            tabContent.classList.add('active');
+            
+            // If switching to results tab, scroll into view
+            if (tabId === 'results') {
+                tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         // Add tab switching logic

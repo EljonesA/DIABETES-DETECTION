@@ -6,7 +6,11 @@ import pandas as pd
 app = Flask(__name__)
 
 # Load the pre-trained model
-model = load('diabetes_model.joblib')
+try:
+    model = load('diabetes_model.joblib')
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
 
 # Define feature names
 FEATURE_NAMES = [
@@ -21,6 +25,9 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if model is None:
+        return jsonify({'error': 'Model not loaded'}), 500
+        
     try:
         data = request.json
         if not data or not all(key in data for key in FEATURE_NAMES):
@@ -53,7 +60,8 @@ def predict():
             'feature_importance': top_features
         })
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        app.logger.error(f"Prediction error: {str(e)}")
+        return jsonify({'error': 'Prediction failed'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run()
