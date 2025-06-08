@@ -170,33 +170,26 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             margin-top: 2rem;
         }
 
         .feature-item {
             background: var(--bg);
-            padding: 1.25rem;
+            padding: 1rem;
             border-radius: 12px;
             border: 1px solid var(--border);
             transition: all 0.2s ease;
-        }
-
-        .feature-item:hover {
-            transform: translateY(-2px);
-            border-color: var(--primary);
-        }
-
-        .feature-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+            min-width: 0; /* Prevents overflow on small screens */
         }
 
         .feature-value {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .feature-importance {
@@ -426,12 +419,20 @@
             }
 
             .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+                grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+                gap: 0.75rem;
             }
 
             .feature-item {
-                padding: 1rem;
+                padding: 0.875rem;
+            }
+
+            .feature-label {
+                font-size: 0.8rem;
+            }
+
+            .feature-value {
+                font-size: 1rem;
             }
 
             .feature-importance {
@@ -443,10 +444,6 @@
             }
 
             .prediction-title {
-                font-size: 1.1rem;
-            }
-
-            .feature-value {
                 font-size: 1.1rem;
             }
 
@@ -480,6 +477,70 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Update placeholder styles */
+        .placeholder-state {
+            opacity: 0.8;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Add minimalist placeholder styles */
+        .placeholder-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .placeholder-card {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.05), rgba(129, 140, 248, 0.05));
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .placeholder-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .placeholder-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .placeholder-bars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .placeholder-bar {
+            height: 4px;
+            background: rgba(96, 165, 250, 0.1);
+            border-radius: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
         }
     </style>
 </head>
@@ -587,12 +648,13 @@
                 </form>
             </div>
 
+            <!-- Replace results tab content -->
             <div id="resultsTab" class="tab-content">
                 <div class="results-header">
                     <i class="ph ph-chart-line-up"></i>
                     <span>Analysis Results</span>
                 </div>
-                <div id="resultSection" class="result-section" style="margin-top: 0;">
+                <div id="resultSection" class="result-section" style="margin-top: 0; display: none;">
                     <div class="prediction-card">
                         <i id="predictionIcon" class="ph prediction-icon"></i>
                         <div class="prediction-content">
@@ -604,6 +666,24 @@
                     <div class="feature-importance">
                         <div class="importance-title">Factors Influencing This Prediction</div>
                         <div id="importanceGrid"></div>
+                    </div>
+                </div>
+                <div id="placeholderSection" class="placeholder-container">
+                    <div class="placeholder-card">
+                        <i class="ph ph-activity placeholder-icon"></i>
+                        <div class="placeholder-label">No Results Yet</div>
+                        <div class="placeholder-hint">Complete the health assessment form</div>
+                    </div>
+                    
+                    <div class="placeholder-card">
+                        <i class="ph ph-chart-pie-slice placeholder-icon"></i>
+                        <div class="placeholder-label">Risk Factors</div>
+                        <div class="placeholder-bars">
+                            <div class="placeholder-bar"></div>
+                            <div class="placeholder-bar"></div>
+                            <div class="placeholder-bar"></div>
+                            <div class="placeholder-bar"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -674,11 +754,10 @@
 
         function updatePredictionUI(result, formData) {
             const resultSection = document.getElementById('resultSection');
-            const predictionIcon = document.getElementById('predictionIcon');
-            const predictionText = document.getElementById('predictionText');
-            const featuresGrid = document.getElementById('featuresGrid');
+            const placeholderSection = document.getElementById('placeholderSection');
             
             resultSection.style.display = 'block';
+            placeholderSection.style.display = 'none';
             
             const isHighRisk = result.prediction === 1;
             predictionIcon.className = `ph prediction-icon ${isHighRisk ? 'ph-warning' : 'ph-check-circle'}`;
