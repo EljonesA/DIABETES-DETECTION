@@ -386,6 +386,22 @@
             transform-origin: left;
         }
 
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 1200px) {
             .form-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -654,6 +670,7 @@
                             <span class="normal-range">(Adult range: 18+ years)</span>
                         </div>
                     </div>
+                    <div class="loader" id="loadingSpinner"></div>
                     <button type="submit" class="submit-btn">Analyze Risk</button>
                 </form>
             </div>
@@ -715,8 +732,10 @@
         document.getElementById('diabetesForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = e.target.querySelector('.submit-btn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
+            loadingSpinner.style.display = 'block';
 
             const formData = {
                 Pregnancies: Number(document.getElementById('pregnancies').value),
@@ -748,6 +767,7 @@
             } finally {
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
             }
         });
 
