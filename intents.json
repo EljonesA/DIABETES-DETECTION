@@ -1,0 +1,43 @@
+{
+  "intents": [
+    {
+      "tag": "symptom",
+      "patterns": [
+        "I have a headache",
+        "What does fever mean?",
+        "Why do I feel dizzy?",
+        "Tell me about cough"
+      ],
+      "responses": [
+        "It sounds like you're experiencing symptoms. Please monitor closely or seek medical help.",
+        "Fever and headaches can indicate infection or other conditions. Keep hydrated!"
+      ]
+    },
+    {
+      "tag": "medication",
+      "patterns": [
+        "Can I take ibuprofen?",
+        "Should I use paracetamol?",
+        "Is metformin okay?",
+        "What medicine helps for pain?"
+      ],
+      "responses": [
+        "Please consult a doctor before taking any medication.",
+        "Ibuprofen is generally used for pain and inflammation, but consult a professional first."
+      ]
+    },
+    {
+      "tag": "test_result",
+      "patterns": [
+        "My blood pressure is high",
+        "What does low sugar mean?",
+        "I have abnormal lab results",
+        "What is a normal heart rate?"
+      ],
+      "responses": [
+        "Test results need interpretation in context. High BP may require lifestyle or medication intervention.",
+        "Low sugar can cause dizziness and fatigue. Monitor and seek care if persistent."
+      ]
+    }
+  ]
+}

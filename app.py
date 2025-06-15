@@ -3,6 +3,15 @@ from joblib import load
 import numpy as np
 import pandas as pd
 
+import json
+import random
+import nltk
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+# Download necessary NLTK resources
+nltk.download('punkt') 
+
 app = Flask(__name__)
 
 # Load the pre-trained model
@@ -62,6 +71,31 @@ def predict():
     except Exception as e:
         app.logger.error(f"Prediction error: {str(e)}")
         return jsonify({'error': 'Prediction failed'}), 500
+
+
+from chatbot import get_response
+
+# Add new endpoint for chat
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        data = request.json
+        user_message = data.get('message', '').strip()
+        
+        if not user_message:
+            return jsonify({'error': 'Empty message'}), 400
+
+        # Get response from chatbot
+        response = get_response(user_message)
+        
+        return jsonify({
+            'response': response,
+            'status': 'success'
+        })
+    except Exception as e:
+        app.logger.error(f"Chat error: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 
 if __name__ == '__main__':
     app.run()
